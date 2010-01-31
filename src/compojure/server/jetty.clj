@@ -10,10 +10,10 @@
   "Clojure interface to start an embedded Jetty server."
   (:use compojure.control
         compojure.server.common)
-  (:import org.mortbay.jetty.Server
-           [org.mortbay.jetty.servlet Context ServletHolder]
-           org.mortbay.jetty.bio.SocketConnector
-           org.mortbay.jetty.security.SslSocketConnector))
+  (:import org.eclipse.jetty.server.Server
+           [org.eclipse.jetty.servlet ServletContextHandler ServletHolder]
+           org.eclipse.jetty.server.bio.SocketConnector
+           org.eclipse.jetty.server.ssl.SslSocketConnector))
 
 (defn servlet-holder
   "Wrap a servlet in a ServletHolder object with a supplied set of parameters
@@ -30,7 +30,7 @@
   ([server]
     (get-context server nil))
   ([server host]
-    (let [context (Context. server "/" Context/SESSIONS)]
+    (let [context (ServletContextHandler. server "/" ServletContextHandler/SESSIONS)]
       (if host
         (doto context (.setVirtualHosts (into-array [host])))
         context))))
